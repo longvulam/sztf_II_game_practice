@@ -1,4 +1,5 @@
 using System;
+using OE.Prog2.Jatek.Szabalyok;
 
 namespace OE.Prog2.Jatek.Jatekter
 {
@@ -32,6 +33,7 @@ namespace OE.Prog2.Jatek.Jatekter
 
                 if (!Aktiv)
                 {
+                    throw new MozgasHalalMiattNemSikerultKivetel(X,Y,this);
                     return;
                 }
             }
@@ -47,6 +49,10 @@ namespace OE.Prog2.Jatek.Jatekter
             {
                 X = ujX;
                 Y = ujY;
+            }
+            else
+            {
+                throw new MozgasHelyHianyMiattNemSikerult(X, Y, this, stillActives);
             }
         }
     }
