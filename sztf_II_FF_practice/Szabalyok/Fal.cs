@@ -3,7 +3,7 @@ using OE.Prog2.Jatek.Megjelenites;
 
 namespace OE.Prog2.Jatek.Szabalyok
 {
-    class Fal : RogizettJatekElem, IKirajzolhato
+    public class Fal : RogizettJatekElem, IKirajzolhato
     {
         public override double Meret { get; } = 1d;
         public char Alak
