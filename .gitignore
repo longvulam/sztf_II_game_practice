@@ -1,0 +1,5 @@
+*.ncrunchsolution
+.vs/
+packages/
+sztf_II_FF_practice/obj/
+sztf_II_FF_practice/bin/
