@@ -2,9 +2,9 @@ using OE.Prog2.Jatek.Jatekter;
 
 namespace OE.Prog2.Jatek.Szabalyok
 {
-    public class MozgasHelyHianyMiattNemSikerultKivetel : MozgasNemSikerultKivetel
+    public class MozgasHelyHianyMiattNemSikerult : MozgasNemSikerultKivetel
     {
-        public MozgasHelyHianyMiattNemSikerultKivetel(int x, int y, JatekElem jatekElem, JatekElem[] elemek)
+        public MozgasHelyHianyMiattNemSikerult(int x, int y, JatekElem jatekElem, JatekElem[] elemek)
             : base(x, y, jatekElem)
         {
             this.elemek = elemek;
