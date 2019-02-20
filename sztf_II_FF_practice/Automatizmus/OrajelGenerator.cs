@@ -1,4 +1,5 @@
 using System;
+using System.IO;
 using System.Threading;
 
 namespace OE.Prog2.Jatek.Automatizmus
@@ -28,8 +29,19 @@ namespace OE.Prog2.Jatek.Automatizmus
                 aktivalasN++;
                 // akinek most epp aktualis, az kap egy orajelet
                 for (int i = 0; i < mukodoN; i++)
+                {
                     if (aktivalasN % mukodok[i].MukodesIntervallum == 0)
-                        mukodok[i].Mukodik();
+                    {
+                        try
+                        {
+                            mukodok[i].Mukodik();
+                        }
+                        catch (Exception e)
+                        {
+                            File.AppendAllText("log.txt", e.ToString());
+                        }
+                    }
+                }
 
                 feldolgozasAlatt = false;
             }
