@@ -19,6 +19,8 @@ namespace OE.Prog2.Jatek.Keret
 
         private void PalyaGeneralas()
         {
+
+
             for (int i = 0; i <= PALYA_MERET_X; i++)
             {
                 new Fal(i, 0, ter);
@@ -30,6 +32,8 @@ namespace OE.Prog2.Jatek.Keret
                 new Fal(0, i, ter);
                 new Fal(PALYA_MERET_X, i, ter);
             }
+
+            LabirintusLetrehoz();
 
             for (int i = 0; i < KINCSEK_SZAMA; i++)
             {
@@ -47,6 +51,56 @@ namespace OE.Prog2.Jatek.Keret
                 var kincs = new Kincs(ranX, ranY, ter);
                 kincs.KincsFelvetel += KincsFelvetelTortent;
             }
+        }
+
+        private void LabirintusLetrehoz()
+        {
+            int faln = 0;
+            Fal[] falak = new Fal[ter.MeretX * ter.MeretY];
+            falak[0] = new Fal(2, 2, ter);
+            faln++;
+            int falIranyokInd = 0;
+
+            Fal valasztottFal;
+            int falakInd;
+            bool vanLehetoseg = true;
+            do
+            {
+                falakInd = random.Next(0, faln - 1);
+                var rNext = random.Next(0, 4);
+                valasztottFal = falak[falakInd];
+
+                bool vanFal;
+                do
+                {
+                    vanFal = FalVizsgalat(rNext);
+
+                    if (vanFal)
+                    {
+                        falIranyokInd++;
+
+                        if (rNext++ == 3)
+                            rNext = 0;
+                    }
+                } while (vanFal && falIranyokInd < 4);
+                falIranyokInd = 0;
+
+            } while (vanLehetoseg);
+        }
+
+        private bool FalVizsgalat(int rNext)
+        {
+            bool vanFal = false;
+            if (rNext == 0) vanFal = Vizsgal(-1, 0);
+            if (rNext == 1) vanFal = Vizsgal(1, 0);
+            if (rNext == 2) vanFal = Vizsgal(0, -1);
+            if (rNext == 3) vanFal = Vizsgal(0, 1);
+            return vanFal;
+        }
+
+        private bool Vizsgal(int x, int y)
+        {
+            throw new NotImplementedException();
         }
 
         public void Futtatas()
@@ -98,8 +152,8 @@ namespace OE.Prog2.Jatek.Keret
                 catch (MozgasHelyHianyMiattNemSikerult e)
                 {
                     Console.Beep(500 + e.Elemek.Length * 100, 10);
-                } 
-               
+                }
+
             } while (!jatekVege);
 
         }
