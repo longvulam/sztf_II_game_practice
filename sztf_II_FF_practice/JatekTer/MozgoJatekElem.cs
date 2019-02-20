@@ -34,7 +34,6 @@ namespace OE.Prog2.Jatek.Jatekter
                 if (!Aktiv)
                 {
                     throw new MozgasHalalMiattNemSikerultKivetel(X,Y,this);
-                    return;
                 }
             }
 
