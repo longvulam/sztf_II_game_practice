@@ -86,12 +86,20 @@ namespace OE.Prog2.Jatek.Keret
 
             do
             {
-                ConsoleKeyInfo key = Console.ReadKey(true);
-                if (key.Key == ConsoleKey.LeftArrow) jatekos.Megy(-1, 0);
-                if (key.Key == ConsoleKey.RightArrow) jatekos.Megy(1, 0);
-                if (key.Key == ConsoleKey.UpArrow) jatekos.Megy(0, -1);
-                if (key.Key == ConsoleKey.DownArrow) jatekos.Megy(0, 1);
-                if (key.Key == ConsoleKey.Escape) jatekVege = true;
+                try
+                {
+                    ConsoleKeyInfo key = Console.ReadKey(true);
+                    if (key.Key == ConsoleKey.LeftArrow) jatekos.Megy(-1, 0);
+                    if (key.Key == ConsoleKey.RightArrow) jatekos.Megy(1, 0);
+                    if (key.Key == ConsoleKey.UpArrow) jatekos.Megy(0, -1);
+                    if (key.Key == ConsoleKey.DownArrow) jatekos.Megy(0, 1);
+                    if (key.Key == ConsoleKey.Escape) jatekVege = true;
+                }
+                catch (MozgasHelyHianyMiattNemSikerult e)
+                {
+                    Console.Beep(500 + e.Elemek.Length * 100, 10);
+                } 
+               
             } while (!jatekVege);
 
         }
