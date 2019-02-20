@@ -21,19 +21,19 @@ namespace OE.Prog2.Jatek.Keret
         {
 
 
-            for (int i = 0; i <= PALYA_MERET_X; i++)
+            for (int i = 0; i < PALYA_MERET_X; i++)
             {
                 new Fal(i, 0, ter);
-                new Fal(i, PALYA_MERET_Y, ter);
+                new Fal(i, PALYA_MERET_Y - 1, ter);
             }
 
-            for (int i = 1; i < PALYA_MERET_Y; i++)
+            for (int i = 1; i < PALYA_MERET_Y - 1; i++)
             {
                 new Fal(0, i, ter);
-                new Fal(PALYA_MERET_X, i, ter);
+                new Fal(PALYA_MERET_X - 1, i, ter);
             }
 
-            LabirintusLetrehoz();
+            LabirintusGeneralas();
 
             for (int i = 0; i < KINCSEK_SZAMA; i++)
             {
@@ -53,54 +53,84 @@ namespace OE.Prog2.Jatek.Keret
             }
         }
 
-        private void LabirintusLetrehoz()
+        private void LabirintusGeneralas()
         {
             int faln = 0;
             Fal[] falak = new Fal[ter.MeretX * ter.MeretY];
-            falak[0] = new Fal(2, 2, ter);
-            faln++;
-            int falIranyokInd = 0;
+            falak[faln++] = new Fal(2, 2, ter);
+
+            int falIranyokCount = 0;
+            int vizsgaltFalCount = 0;
 
             Fal valasztottFal;
             int falakInd;
             bool vanLehetoseg = true;
             do
             {
-                falakInd = random.Next(0, faln - 1);
-                var rNext = random.Next(0, 4);
-                valasztottFal = falak[falakInd];
-
-                bool vanFal;
+                vizsgaltFalCount = 0;
+                falakInd = random.Next(0, faln);
+                ;
+                bool bovitheto;
                 do
                 {
-                    vanFal = FalVizsgalat(rNext);
+                    valasztottFal = falak[falakInd++];
+                    int rNext = random.Next(1, 5);
 
-                    if (vanFal)
+                    bool vanFal;
+                    int dicedX = 0;
+                    int dicedY = 0;
+                    int currentX;
+                    int currentY;
+                    do
                     {
-                        falIranyokInd++;
+                        if (rNext == 1) { dicedX = 0; dicedY = -2; }
+                        if (rNext == 2) { dicedX = 0; dicedY = 2; }
+                        if (rNext == 3) { dicedX = 2; dicedY = 0; }
+                        if (rNext == 4) { dicedX = -2; dicedY = 0; }
 
-                        if (rNext++ == 3)
-                            rNext = 0;
+                        currentX = valasztottFal.X + dicedX;
+                        currentY = valasztottFal.Y + dicedY;
+
+                        vanFal = Vizsgal(valasztottFal.X, valasztottFal.Y, dicedX, dicedY);
+
+                        if (vanFal)
+                        {
+                            falIranyokCount++;
+
+                            if (rNext++ == 4)
+                                rNext = 1;
+                        }
+                    } while (vanFal && falIranyokCount < 4);
+
+                    bovitheto = falIranyokCount < 4;
+                    if (bovitheto)
+                    {
+                        falak[faln++] = new Fal(currentX, currentY, ter);
+                        new Fal(currentX - dicedX / 2, currentY - dicedY / 2, ter);
                     }
-                } while (vanFal && falIranyokInd < 4);
-                falIranyokInd = 0;
+                    else
+                    {
+                        vizsgaltFalCount++;
+                    }
 
-            } while (vanLehetoseg);
+                    falIranyokCount = 0;
+                    if (falakInd == faln)
+                    {
+                        falakInd = 0;
+                    }
+                } while (!bovitheto && vizsgaltFalCount < faln);
+
+            } while (vizsgaltFalCount < faln);
         }
 
-        private bool FalVizsgalat(int rNext)
+        private bool Vizsgal(int currentX, int currentY, int dicedX, int dicedY)
         {
-            bool vanFal = false;
-            if (rNext == 0) vanFal = Vizsgal(-1, 0);
-            if (rNext == 1) vanFal = Vizsgal(1, 0);
-            if (rNext == 2) vanFal = Vizsgal(0, -1);
-            if (rNext == 3) vanFal = Vizsgal(0, 1);
-            return vanFal;
-        }
 
-        private bool Vizsgal(int x, int y)
-        {
-            throw new NotImplementedException();
+            JatekElem[] talaltakKetTavra = ter.MegadottHelyenLevok(currentX + dicedX, currentY + dicedY);
+            JatekElem[] talaltakEgyTavra = ter.MegadottHelyenLevok(currentX + dicedX / 2, currentY + dicedY / 2);
+
+            return talaltakKetTavra.Length == 1 && talaltakKetTavra[0] is Fal
+                   || talaltakEgyTavra.Length == 1 && talaltakEgyTavra[0] is Fal;
         }
 
         public void Futtatas()
@@ -120,7 +150,7 @@ namespace OE.Prog2.Jatek.Keret
                 Aktiv = true
             };
 
-            GonoszGepiJatekos gonoszGep = new GonoszGepiJatekos(1, PALYA_MERET_Y - 1, ter)
+            GonoszGepiJatekos gonoszGep = new GonoszGepiJatekos(1, PALYA_MERET_Y - 2, ter)
             {
                 Nev = "Laci",
                 Aktiv = true
