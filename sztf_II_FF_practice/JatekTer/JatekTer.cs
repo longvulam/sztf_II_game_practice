@@ -97,8 +97,6 @@ namespace OE.Prog2.Jatek.Jatekter
             JatekElem[] elems = new JatekElem[foundElems];
             int n = 0;
 
-            var kincsek = elemek.Where(e => e is Kincs).ToList();
-
             for (int i = 0; i < elemN; i++)
             {
                 JatekElem currentElem = elemek[i];
